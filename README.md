@@ -26,6 +26,8 @@ git commit -m "feat: a new feature"
 # Make another changes
 git add -A
 git commit -m "fix: an bug that prevents feature from working"
-# All ready to push?
+git push # to check whether build will be successful on GitHub workflows
+
+# "Release" when everything works! (Consolidates the commits into one version release)
 pnpm release preminor # follow next instructions generated
 ```
