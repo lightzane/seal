@@ -226,7 +226,7 @@ export default function Main() {
     </div>
 
     <div class="mt-4">
-      <div id="sealDate" class="mb-4 text-xs md:text-sm text-gray-500"></div>
+      <div id="sealDate" class="mb-4 text-sm text-gray-500"></div>
 
       <div class="grid grid-cols-1">
         ${BaseTextarea({ id: messageId, maxRows: 15 })}
