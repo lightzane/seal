@@ -95,8 +95,6 @@ export default function Main() {
 
     // Show copy button
     document.getElementById(copyId)!.style.display = 'block'
-
-    setTimeout(handleCopy, 50)
   }
 
   async function handleUnseal() {
