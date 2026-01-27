@@ -1,0 +1,16 @@
+{
+  // Run via `npx tsc -p tsconfig.for-min.json`
+  // Then run `npx terser ./for-minify/seal.js --compress --mangle --module --output ./src/utils/seal.min.js`
+
+  // Do not forget generated `.d.ts` files are in `for-minify` folder
+  // Wrap the .d.ts file with `declare module '~/utils/seal.min' { ... }`
+  // (Note: Check import path is correct `declare module <import_path> { ... }`)
+  "compilerOptions": {
+    "outDir": "for-minify",
+    "declaration": true, // generate .d.ts files
+    "module": "esnext",
+    "moduleResolution": "node"
+  },
+  "files": ["src/utils/seal.ts"], // Targets ONLY this file
+  "include": [] // Ensures no other files are included
+}
