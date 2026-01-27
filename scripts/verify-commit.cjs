@@ -7,7 +7,7 @@ const msgPath = path.resolve('.git/COMMIT_EDITMSG') // https://git-scm.com/docs/
 const msg = readFileSync(msgPath, 'utf-8').trim()
 
 const commitRE =
-  /^(revert: )?(feat|fix|docs|refactor|perf|test|build|ci|chore|release)(\(.+\))?: .{1,50}/
+  /^(revert: )?(feat|fix|docs|style|refactor|perf|test|build|ci|chore|release)(\(.+\))?: .{1,50}/
 
 if (!commitRE.test(msg)) {
   console.log()
