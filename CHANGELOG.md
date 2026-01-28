@@ -1,3 +1,9 @@
+# [0.2.0-alpha.0](https://github.com/lightzane/seal/compare/v0.1.2-alpha.0...v0.2.0-alpha.0) (2026-01-28)
+
+### Features
+
+- add form dialog for seal and unseal ([db07f8a](https://github.com/lightzane/seal/commit/db07f8a5f3a6357c612490c909969b8147918fd9))
+
 ## [0.1.2-alpha.0](https://github.com/lightzane/seal/compare/v0.1.1-alpha.0...v0.1.2-alpha.0) (2026-01-27)
 
 ### Bug Fixes
