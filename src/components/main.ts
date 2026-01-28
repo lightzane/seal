@@ -1,4 +1,6 @@
 import BaseTextarea from '~/components/base/base-textarea'
+import DialogSeal from '~/components/dialogs/dialog-seal'
+import DialogUnseal from '~/components/dialogs/dialog-unseal'
 import { btnPrimary, btnSecondary } from '~/themes/button'
 import { bytesToEmoji, emojiToBytes } from '~/utils/encodings/emoji'
 import { seal, unseal } from '~/utils/seal.min'
@@ -8,41 +10,22 @@ export default function Main() {
   const messageId = 'message'
   /** Copy button ref */
   const copyId = 'copy'
+  /** Seal button ref */
+  const sealId = 'seal'
+  /** Unseal button ref */
+  const unsealId = 'unseal'
 
   let readonlyMode = false
 
   document.addEventListener('DOMContentLoaded', () => {
     document.getElementById(messageId)?.addEventListener('input', handleMessage)
-    document.getElementById('seal')?.addEventListener('click', handleSeal)
-    document.getElementById('unseal')?.addEventListener('click', handleUnseal)
+    document.getElementById(sealId)?.addEventListener('click', handleSeal)
+    document.getElementById(unsealId)?.addEventListener('click', handleUnseal)
     document.getElementById('clear')?.addEventListener('click', handleClear)
     document.getElementById(copyId)?.addEventListener('click', handleCopy)
   })
 
-  function handleMessage() {
-    const sealDateDiv = document.getElementById('sealDate') as HTMLDivElement
-    sealDateDiv.style.display = 'none'
-    sealDateDiv.innerText = ''
-  }
-
-  async function handleSeal() {
-    if (readonlyMode) {
-      return
-    }
-
-    const sealInput = prompt('📩 Enter password to seal')
-
-    if (!sealInput) {
-      return
-    }
-
-    const confirmSealInput = prompt('💌 Confirm password to seal')
-
-    if (sealInput !== confirmSealInput) {
-      alert('Passwords do not match')
-      return
-    }
-
+  async function sealTheMessage(sealInput: string) {
     const messageTextarea = document.getElementById(
       messageId
     ) as HTMLTextAreaElement
@@ -95,19 +78,13 @@ export default function Main() {
 
     // Show copy button
     document.getElementById(copyId)!.style.display = 'block'
+
+    // Disable Seal/Unseal button
+    document.getElementById(sealId)?.setAttribute('disabled', 'true')
+    document.getElementById(unsealId)?.setAttribute('disabled', 'true')
   }
 
-  async function handleUnseal() {
-    if (readonlyMode) {
-      return
-    }
-
-    const sealInput = prompt('Enter password to unseal')
-
-    if (!sealInput) {
-      return
-    }
-
+  async function unsealTheMessage(sealInput: string) {
     const messageTextarea = document.getElementById(
       messageId
     ) as HTMLTextAreaElement
@@ -159,11 +136,69 @@ export default function Main() {
           weekday: 'short',
         }
       )}`
+
+      // Disable Seal/Unseal button
+      document.getElementById(sealId)?.setAttribute('disabled', 'true')
+      document.getElementById(unsealId)?.setAttribute('disabled', 'true')
     } catch {
       alert(
         'Failed to unseal message. Please check your password and sealed message.'
       )
     }
+  }
+
+  function handleMessage() {
+    const sealDateDiv = document.getElementById('sealDate') as HTMLDivElement
+    sealDateDiv.style.display = 'none'
+    sealDateDiv.innerText = ''
+  }
+
+  async function handleSeal() {
+    if (readonlyMode) {
+      return
+    }
+
+    // No message to seal
+    const messageTextarea = document.getElementById(
+      messageId
+    ) as HTMLTextAreaElement
+
+    if (!messageTextarea) {
+      return
+    }
+
+    const message = messageTextarea.value
+
+    if (!message || message.trim() === '') {
+      alert('No message to seal')
+      return
+    }
+
+    DialogSeal({ onConfirm: sealTheMessage })
+  }
+
+  async function handleUnseal() {
+    if (readonlyMode) {
+      return
+    }
+
+    // No message to unseal
+    const messageTextarea = document.getElementById(
+      messageId
+    ) as HTMLTextAreaElement
+
+    if (!messageTextarea) {
+      return
+    }
+
+    const message = messageTextarea.value
+
+    if (!message || message.trim() === '') {
+      alert('No message to unseal')
+      return
+    }
+
+    DialogUnseal({ onConfirm: unsealTheMessage })
   }
 
   function handleClear() {
@@ -174,6 +209,19 @@ export default function Main() {
     if (!messageTextarea) {
       return
     }
+
+    // Confirm clear
+    const confirmClear = window.confirm(
+      'Are you sure you want to clear the message?'
+    )
+
+    if (!confirmClear) {
+      return
+    }
+
+    // Enable Seal/Unseal button
+    document.getElementById(sealId)?.removeAttribute('disabled')
+    document.getElementById(unsealId)?.removeAttribute('disabled')
 
     messageTextarea.value = ''
     messageTextarea.readOnly = false
