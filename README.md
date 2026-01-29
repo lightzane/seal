@@ -1,6 +1,7 @@
 # Seal
 
-Basic sealing of shareable messages using a password.
+Seal lets you securely encrypt and share messages using a password,
+ensuring only intended recipients can unlock and read your content.
 
 ## Developer Notes
 

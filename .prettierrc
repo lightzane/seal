@@ -6,7 +6,7 @@
 
   "overrides": [
     {
-      "files": "**/utils**/*.ts",
+      "files": ["**/utils**/*.ts", "index.html"],
       "options": {
         "printWidth": 150
       },
