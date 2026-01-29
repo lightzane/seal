@@ -294,7 +294,9 @@ export default function Main() {
 
     // ! Note: Some browsers may require secure context (HTTPS) for share access
     window.navigator.share(shareData).catch((error) => {
-      alert('Error sharing message: ' + error)
+      if (import.meta.env.DEV) {
+        alert('Error sharing message: ' + error) // This also triggers on user cancel
+      }
     })
   }
 
