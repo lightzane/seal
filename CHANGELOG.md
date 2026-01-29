@@ -1,3 +1,10 @@
+# [0.2.0-alpha.1](https://github.com/lightzane/seal/compare/v0.2.0-alpha.0...v0.2.0-alpha.1) (2026-01-29)
+
+### Features
+
+- add github repo link ([68d2331](https://github.com/lightzane/seal/commit/68d233160237491acb23aff64d61b21b55b036c2))
+- add qr code ([bfe9972](https://github.com/lightzane/seal/commit/bfe9972004fdd5e783e808a23a0625612466dab9))
+
 # [0.2.0-alpha.0](https://github.com/lightzane/seal/compare/v0.1.2-alpha.0...v0.2.0-alpha.0) (2026-01-28)
 
 ### Features
