@@ -15,7 +15,8 @@ export default function Main() {
   /** Unseal button ref */
   const unsealId = 'unseal'
 
-  let readonlyMode = false
+  let stateReadonlyMode = false
+  let stateMessageSealed = false
 
   document.addEventListener('DOMContentLoaded', () => {
     document.getElementById(messageId)?.addEventListener('input', handleMessage)
@@ -23,6 +24,7 @@ export default function Main() {
     document.getElementById(unsealId)?.addEventListener('click', handleUnseal)
     document.getElementById('clear')?.addEventListener('click', handleClear)
     document.getElementById(copyId)?.addEventListener('click', handleCopy)
+    document.getElementById('share')?.addEventListener('click', handleShare)
   })
 
   async function sealTheMessage(sealInput: string) {
@@ -71,7 +73,8 @@ export default function Main() {
 
     const sealed = bytesToEmoji(combined)
 
-    readonlyMode = true
+    stateMessageSealed = true
+    stateReadonlyMode = true
     messageTextarea.value = sealed
     messageTextarea.readOnly = true
     messageTextarea.dispatchEvent(new Event('input'))
@@ -117,7 +120,8 @@ export default function Main() {
       const result = await unseal(sealInput, newIv, newSalt, newCipherText)
       const resultJson: ISealedData = JSON.parse(result)
 
-      readonlyMode = true
+      stateMessageSealed = false
+      stateReadonlyMode = true
       messageTextarea.readOnly = true
       messageTextarea.value = resultJson.m
       messageTextarea.dispatchEvent(new Event('input'))
@@ -154,7 +158,7 @@ export default function Main() {
   }
 
   async function handleSeal() {
-    if (readonlyMode) {
+    if (stateReadonlyMode) {
       return
     }
 
@@ -178,7 +182,7 @@ export default function Main() {
   }
 
   async function handleUnseal() {
-    if (readonlyMode) {
+    if (stateReadonlyMode) {
       return
     }
 
@@ -225,7 +229,8 @@ export default function Main() {
 
     messageTextarea.value = ''
     messageTextarea.readOnly = false
-    readonlyMode = false
+    stateReadonlyMode = false
+    stateMessageSealed = false
 
     /* 
         to trigger auto-resize or other listeners
@@ -250,6 +255,7 @@ export default function Main() {
       return
     }
 
+    // ! Note: Some browsers may require secure context (HTTPS) for clipboard access
     window.navigator.clipboard
       .writeText(message)
       .then(() => {
@@ -258,6 +264,38 @@ export default function Main() {
       .catch(() => {
         alert('Failed to copy message to clipboard')
       })
+  }
+
+  function handleShare() {
+    const messageTextarea = document.getElementById(
+      messageId
+    ) as HTMLTextAreaElement
+
+    if (!messageTextarea) {
+      return
+    }
+
+    const message = messageTextarea.value
+
+    if (!message || message.trim() === '') {
+      alert('No message to share')
+      return
+    }
+
+    if (!stateMessageSealed) {
+      alert('Only sealed messages can be shared directly.')
+      return
+    }
+
+    const shareData: ShareData = {
+      title: 'Sealed Message',
+      text: message,
+    }
+
+    // ! Note: Some browsers may require secure context (HTTPS) for share access
+    window.navigator.share(shareData).catch((error) => {
+      alert('Error sharing message: ' + error)
+    })
   }
 
   return /* html */ `<main>
@@ -280,7 +318,10 @@ export default function Main() {
 
       <div class="mt-4 flex justify-between">
         <button id="clear" type="button" class="${btnSecondary}">Clear</button>
-        <button id="copy" type="button" class="${btnSecondary}">Copy</button>
+        <div class="flex gap-2">
+          <button id="copy" type="button" class="${btnSecondary}">Copy</button>
+          <button id="share" type="button" class="${btnSecondary}">Share</button>
+        </div>
       </div>
     </div>
   </main>`
