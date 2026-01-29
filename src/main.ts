@@ -4,6 +4,7 @@ import { cn } from '~/utils'
 import Footer from '~/components/footer'
 import Main from '~/components/main'
 
+import QrCode from '~/components/qr-code'
 import { example_withoutMetadata } from '~/examples/without-medata'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = /* html */ `
@@ -12,6 +13,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = /* html */ `
     `flex min-h-svh flex-col justify-between`
   )}">
     ${Main()}
+    ${QrCode()}
     ${Footer()}
   </div>
 `
