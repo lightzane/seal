@@ -1,3 +1,9 @@
+# [0.2.0-alpha.2](https://github.com/lightzane/seal/compare/v0.2.0-alpha.1...v0.2.0-alpha.2) (2026-01-31)
+
+### Features
+
+- add share feature for sealed messages ([e4a4af9](https://github.com/lightzane/seal/commit/e4a4af9b01e3ed2a565e92dec1812c52d5cada83))
+
 # [0.2.0-alpha.1](https://github.com/lightzane/seal/compare/v0.2.0-alpha.0...v0.2.0-alpha.1) (2026-01-29)
 
 ### Features
